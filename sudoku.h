@@ -3,3 +3,4 @@
 
 void createPuzzle();
 int solve();
+int is_valid();
