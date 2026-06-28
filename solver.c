@@ -27,3 +27,41 @@ int solve(int row int column){
 
 	return 0; // wenn keine Zahl passt: 0 wird zurück gegeben
 }
+
+int is_valid(int row, int column, int number){
+
+	int i; // Zaehlvariablen einfuehren
+	int j; 
+
+	for (i = 0; i < 9; i++) { 
+		// alle Spalten i der Zeile row durchgehen 
+		if (i != column){ // alle Felder der Zeile außer das betrachtete abchecken
+			if (grid[row][i] == number){ // wenn die Zahl schonmal vorkommt...
+				return 0; //... kann sie nicht in das Feld kommen
+			}
+		}
+		// alle Zeilen i der Spalte column durchgehen 
+		if (i != row){ // alle anderen Felder der Spalte abchecken
+			if (grid[i][column] == number){ // wenn die Zahl schonmal vorkommt...
+				return 0; // ... kann sie nicht nochmal in diese Spalte
+			}
+		}
+	}
+
+	int fr = (row/3)*3; // jetzt das 3*3 Feld abchecken
+	int fc = (column/3)*3;
+
+	for (i=fr; i<fr+3; i++){ // i laeuft ueber die Zeilenindizes vom 3*3 Feld
+		for (j=fc; j<fc+3; j++){ // j ueber die Splatenindizes
+			if (i!=row || j!=column){ // alle anderen Felder im 3*3 Feld betrachten
+				if (grid[i][j] == number){ // Wenn der Wert schonmal vorkommt...
+					return 0; // ... kann er nicht auch in das zu testende Feld!
+				}
+			}
+		}
+	}
+
+	// wenn bisher noch nichts dagegen spricht...
+	return 1; //... darf die Zahl in das betrachtete Feld
+
+}
