@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "sudoku.h"
 
-int solve(int row int column)
+int solve(int **grid, int row, int column)
 {
 	int number = 1; // zu testende Zahl
 
@@ -19,7 +19,7 @@ int solve(int row int column)
 
 	while (number < 10)
 	{ // Zahlen nacheinander testen
-		if (is_valid(row, column, number))
+		if (is_valid(grid, row, column, number))
 		{ // wenn die Zahl passt
 
 			grid[row][column] = number; // Zahl wird eingetragen
@@ -38,7 +38,7 @@ int solve(int row int column)
 	return 0; // wenn keine Zahl passt: 0 wird zurück gegeben
 }
 
-int is_valid(int row, int column, int number)
+int is_valid(int **grid, int row, int column, int number)
 {
 
 	int i; // Zaehlvariablen einfuehren
