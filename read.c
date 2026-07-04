@@ -10,7 +10,7 @@ int **read()
     {
         matrix[i] = malloc(9 * sizeof(int)); // Speicherplatz für Spalten in den jeweiligen Zeilen reservieren
     }
-    FILE *datei = fopen("sudoku.txt", "r"); // Datei öffnen
+    FILE *datei = fopen("inputSudoku.txt", "r"); // Datei öffnen
     if (datei == NULL)
     { // Wenn Datei nicht existiert, Fehler
         perror("Fehler beim Oeffnen");
