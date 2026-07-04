@@ -3,11 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int solve();
-int is_valid();
-int **read();
-int validate(int **matrix);
-void output(int **matrix);
-void printMatrix(int **matrix);
+int main();
+int solve(int row, int column, int sudoku[9][9]); 
+int validate_cell(int row, int column, int number, int sudoku[9][9]);
+int** read();
+int validate_matrix(int** matrix);
+void output(int** matrix);
+void printMatrix(int** matrix);
 
 #endif
