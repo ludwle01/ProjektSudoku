@@ -5,9 +5,9 @@
 
 int solve();
 int is_valid();
-int** read();
-int validate(int** matrix);
-void output(int** matrix);
-void printMatrix(int** matrix);
+int **read();
+int validate(int **matrix);
+void output(int **matrix);
+void printMatrix(int **matrix);
 
 #endif
