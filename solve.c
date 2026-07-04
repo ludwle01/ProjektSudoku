@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "header.h" 
+#include "sudoku.h" 
 
 int solve(int row, int column, int sudoku[9][9]){
 
