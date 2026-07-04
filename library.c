@@ -44,7 +44,7 @@ int** read(){
         }
         //PROBLEMATISCH
         if(zeile > 9){
-            perror("Du hast du viele Zeilen!");
+            perror("Du hast zu viele Zeilen!");
             return NULL;
         }
         if (zeile < 9) {
