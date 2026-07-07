@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "sudoku.h" 
 
-int solve(int row, int column, int sudoku[9][9]){
+int solve(int row, int column, int **sudoku){
 
 	if (column == 9) { // am Ende einer Zeile angekommen
 		column = 0; // am Anfang der naechsten Zeile geht es weiter
@@ -14,13 +14,12 @@ int solve(int row, int column, int sudoku[9][9]){
     }
 
 	if (sudoku[row][column] != 0) { // besetzte Felder ueberspringen
-        return solve(row, column + 1, sudoku);
+        return solve(row, column+1, sudoku);
     }
 
 	for(int number = 1; number < 10; number++) { // sonst: Zahlen nacheinander testen
 		if (validate_cell(row, column, number, sudoku)) { // wenn die Zahl passen wuerde
-			
-            sudoku[row][column] = number; // Zahl eintragen
+			sudoku[row][column] = number; // Zahl eintragen
             // ... und das Gitter an der naechsten Position angeschaut
 			if(solve(row, column + 1, sudoku)){ // rekursiver Aufruf
 				return 1;
@@ -29,11 +28,12 @@ int solve(int row, int column, int sudoku[9][9]){
 
 		sudoku[row][column] = 0; // Eintrag resetten, wenn die Zahl nicht passt
 	}
-
-	return 0; // wenn keine Zahl passt: 0 wird zurück gegeben
+	
+	// 
+	return 0; 
 }
 
-int validate_cell(int row, int column, int number, int sudoku[9][9]){
+int validate_cell(int row, int column, int number, int **sudoku){
 
 	int i; // Zaehlvariablen einfuehren
 	int j; 

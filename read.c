@@ -66,7 +66,7 @@ int **read()
             eintrag++;
         }
     }
-    printf("Das eingegebene Sudoku:\n");
+    printf("Successfully read the following puzzle:\n");
     printMatrix(matrix);
     fclose(datei);
     return matrix;
