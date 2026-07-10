@@ -1,6 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "sudoku.h"
+#include "main2.h"
+
+void freeMatrix(int **matrix)
+{
+    if (matrix == NULL)
+        return;
+
+    for (int i = 0; i < 9; i++)
+    {
+        free(matrix[i]); // Erst die einzelnen Zeilen freigeben
+    }
+    free(matrix); // Dann das Array von Zeilen-Pointern freigeben
+}
 
 int **read()
 {
@@ -14,11 +27,7 @@ int **read()
     if (datei == NULL)
     { // Wenn Datei nicht existiert, Fehler
         perror("Fehler beim Oeffnen");
-        for (int i = 0; i < 9; i++)
-        {
-            free(matrix[i]);
-        }
-        free(matrix);
+        freeMatrix(matrix);
         return NULL;
     }
     int zeile = 0;
@@ -33,6 +42,7 @@ int **read()
             { // Wenn != 9 Einträge
                 fprintf(stderr, "Deine Matrix hat in Zeile %d keine 9 Eintraege!\n", zeile);
                 fclose(datei);
+                freeMatrix(matrix);
                 return NULL;
             }
             if (eintrag == 0 && n == '\n')
@@ -52,22 +62,51 @@ int **read()
         { // Wenn Eintrag nicht zwischen 0 und 9 Error
             perror("Der Eintrag ist nicht zwischen 0 und 9.");
             fclose(datei);
+            freeMatrix(matrix);
             return NULL;
         }
         // PROBLEMATISCH
-        if (zeile > 9)
+        if (zeile >= 9)
         {
             perror("Du hast zu viele Zeilen!");
+            freeMatrix(matrix);
+            fclose(datei);
             return NULL;
         }
-        if (zeile < 9)
+
+        if (eintrag >= 9)
         {
-            matrix[zeile][eintrag] = n - '0';
-            eintrag++;
+            fprintf(stderr, "Fehler: Zu viele Eintraege in Zeile %d!\n", zeile + 1);
+            fclose(datei);
+            freeMatrix(matrix);
+            return NULL;
         }
+        matrix[zeile][eintrag] = n - '0';
+        eintrag++;
+    }
+
+    fclose(datei);
+    // Letzte Ziele Prüfen
+    if (eintrag != 0)
+    {
+        if (eintrag != 9)
+        {
+            fprintf(stderr, "Fehler: Letzte Zeile hat keine 9 Eintraege!\n");
+            freeMatrix(matrix);
+            return NULL;
+        }
+        zeile++;
+    }
+
+    // Prüfen, ob wir auch wirklich ein 9 Zeilen haben
+    if (zeile != 9)
+    {
+        fprintf(stderr, "Fehler: Das Sudoku ist unvollstaendig (nur %d von 9 Zeilen).\n", zeile);
+        freeMatrix(matrix);
+        return NULL;
     }
     printf("Das eingegebene Sudoku:\n");
     printMatrix(matrix);
-    fclose(datei);
+
     return matrix;
 }

@@ -43,6 +43,9 @@ int validate(int **matrix)
                 if (zeilen[i][zeilenWert - 1] == 1)
                 { // Wenn die Zahl schon vorhanden ist (also in der Matrix 1 eingetragen ist)
                     fprintf(stderr, "In Zeile %d ist eine doppelte Zahl vorhanden.\n", i + 1);
+                    freeMatrix(zeilen);
+                    freeMatrix(spalten);
+                    freeMatrix(bloecke);
                     return 1;
                 }
                 else
@@ -58,6 +61,9 @@ int validate(int **matrix)
                 if (spalten[spaltenWert - 1][i] == 1)
                 {
                     fprintf(stderr, "In Spalte %d ist eine doppelte Zahl vorhanden.\n", i + 1);
+                    freeMatrix(zeilen);
+                    freeMatrix(spalten);
+                    freeMatrix(bloecke);
                     return 1;
                 }
                 else
@@ -81,6 +87,9 @@ int validate(int **matrix)
                 if (bloecke[i][blockWert - 1] == 1)
                 {
                     fprintf(stderr, "In Block %d ist eine doppelte Zahl vorhanden.\n", i + 1);
+                    freeMatrix(zeilen);
+                    freeMatrix(spalten);
+                    freeMatrix(bloecke);
                     return 1;
                 }
                 else
@@ -90,6 +99,8 @@ int validate(int **matrix)
             }
         }
     }
-
-       return 0;
+    freeMatrix(zeilen);
+    freeMatrix(spalten);
+    freeMatrix(bloecke);
+    return 0;
 }
