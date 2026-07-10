@@ -1,0 +1,96 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[ngerman]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}    
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[
+    top=3.0cm,
+    bottom=3.5cm,
+    left=2.5cm,
+    right=2.5cm,
+    headheight=16pt, 
+    headsep=20pt
+]{geometry}
+
+\usepackage{parskip} 
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} 
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{Sudoku-Tool} 
+\fancyhead[R]{\thepage} 
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{booktabs}
+
+\newcommand{\berichtstitel}{Sudoku-Tool}
+\newcommand{\autoren}{Lena Marie Ludwig, Jari Hartmann, Lisa Rappold}
+\newcommand{\institution}{Technische Hochschule Ulm}
+\newcommand{\datum}{Juli 2026}
+
+\begin{document}
+
+\thispagestyle{plain}
+\begin{center}
+    \LARGE \textbf{\berichtstitel} \\[0.4cm]
+    \large \autoren \\[0.2cm]
+    \small \textit{\institution} \\[0.3cm]
+    \small \textbf{\datum} \\[0.2cm] 
+    \rule{\linewidth}{1pt} 
+\end{center}
+\vspace{0.5cm}
+
+
+\vspace{0.8cm}
+
+\section{Einleitung}
+Dieses Projekt hat das Ziel, ein Sudoku-Tool zu entwickeln, das verschiedene Funktionen wie das Einlesen von Sudoku-Rätseln, die Validierung der Eingaben, die Lösung des Rätsels und die Ausgabe der Ergebnisse bietet. 
+
+Hierbei haben wir uns im ersten Schritt mit den Must-Have-Features beschäftigt. Das Programm kann ein Sudoku aus einer Textdatei einlesen und dieses auf Gültigkeit prüfen. Hierbei stellt es sicher, dass keine doppelten Zahlen in einer Zeile, Spalte oder einem Block vorkommen. Anschließend kann das Sudoku gelöst werden, wobei die Lösung auf der Konsole ausgegeben werden kann. Der Benutzer hat zu jedem Zeitpunkt die Möglichkeit, das Sudoku in einer Textdatei formatiert auszugeben. 
+
+In diesem Bericht stellen wir die Umsetzung und Funktionalität der einzelnen Funktionen vor.
+
+\section{read()}
+Eine read() Methode zum Einlesen von Sudoku-Rätseln ist essenzial für die Funktionalität des Solvers. Hierfür gibt der User sein Sudoku in die Textdatei \textit{inputSudoku.txt} ein. Dann wird mittels malloc() Speicherplatz für eine Matrix int** reserviert. Anschließend wird versucht, die Textdatei im Lesemodus zu öffnen. Schlägt dies fehl, wenn beispielsweise die Datei im Verzeichnis fehlt, wird der Speicherplatz wieder freigegeben und das Programm bricht mit einer Fehlermeldung ab. Ist das Öffnen erfolgreich, liest die Methode mithilfe einer while-Schleife das Sudoku ein.
+
+Hierbei werden kleine Fehler bei der Nutzereingabe ignoriert. Leerzeichen, senkrechte Striche, Bindestriche und leere Zeilen werden übersprungen. 
+
+Bereits bei dem Einlesen wird eine grundlegende Validierung vorgenommen. Die Methode wirft eine Fehlermeldung, wenn in einer Zeile, die nicht leer ist, mehr oder weniger als 9 Zahlen vorkommen. Außerdem werden nur Eingaben von 0 bis 9 akzeptiert. Die Zahl 0 steht hierbei für ein leeres Feld. Auch bei zu vielen oder zu wenigen Zeilen wird eine Fehlermeldung ausgegeben.
+
+Hendelt es sich bei dem eingegeben Zeichen um eine Zahl zwischen 0 und 9, wird durch die Substraktion des ASCII Wertes von 0 der korrekte Wert in der Matrix gespeichert. Zuletzt ruft die Funktion printMatrix(), um die eingelesene Matrix in der Konsole auszugeben.
+
+\section{validate()}
+
+Die Funkton validate() überprüft, ob das Sudoku gültig ist. Hierfür werden drei 9x9 Hilfs-Matrizen erstellt, die jeweils die Zeilen, Spalten und Blöcke des Sudokus repräsentieren. Hierfür wird calloc verwendet, um gleichzeitig die Werte auf 0 zu setzen. 
+
+Wird beispielsweise die erste Zeile des Sudokus überprüft, geht die Funktion mit einer verschachtelten for-Schleife jedes Element durch. Ist eine Zahl vorhanden, wird in der entsprechenden Zeile der Matrix zeile der Wert in Index \textit{zahl-1} auf 1 gesetzt. Es repräsentiert also jede Spalte eine Zahl. Sobald diese vorhanden ist, wird die Spalte in der entsprechenden Zeile auf 1 gesetzt. Ist dieses Element in der Matrix schon 1, kommt diese Zahl doppelt vor und es wird eine Fehlermeldung ausgegeben.
+
+Indem die Indizes der verschachtelten for-Schleifen getauscht werden, können die Spalten des Sudokus überprüft werden. Es wird mit der selben Logik vorgegangen. Hierbei repäsentiert jede Spalte in der Matrix \textit{spalte} eine Spalte in dem Sudoku.
+
+Das Validieren er Blöcke ist etwas komplexer. Hierfür werden zwei Hilfsarrays BLOCKZEILE und BLOCKSPALTE erstellt, die für jeden der neun Blöcke die Koordinaten der linken oberen Ecke speichern. Die Zeile wird ermittelt, indem der entsprechende Wert aus BLOCKZEILE mit j/3 addiert wird. Da Nachkommastellen von Integern abgeschnitten werden, werden die entsprechenden Werte in BLOCKZEILE mit 0, 1 und 2 addiert, was die korrekte Zeile ergibt.
+
+Die Spalte wird ermittelt, indem der entsprechende Wert aus BLOCKSPALTE mit j\%3 addiert wird. Hierdurch wird BLOCKZEILE mit der Sequens 0, 1, 2 addiert, was die korrekte Spalte ergibt.
+
+Hierbei wird jeder Block in der Matrix \textit{block} in einer Zeile gespeichert. Auch hier repräsentiert jede Spalte eine Zahl.
+
+\section{Methodenname()}
+To do: Jari
+
+
+\section{solve()}
+To do: Lena
+
+\section{output()}
+
+Diese Funktion hat das Ziel, das Sudoku formatiert in einer Textdatei zu speichern. 
+
+Hierfür öffnet sie zunächst die Zieldatei \textit{outputSudoku.txt} im Schreibmodus. Schlägt dies fehl, wird eine Fehlermeldung ausgegeben. Für die Ausgabe der Matrix wird eine for-Schleife über insgesamt elf Durchläufe genutzt, wobei neun für die Zeilen des Sudokus stehen und zwei für die Trennstriche zwischen den 3x3 Blöcken. Hierbei gibt es die Variable \textit{verschiebung}, die dafür sorgt, dass trotz der Trennstriche die korrekten Zeilen der Matrix ausgegeben werden. Das erfolgt, indem die Variable jeweils bei dem Einfügen der horizontalen Trennstrichen hochgezählt wird. Dann wird jeweils die Matrix in der Zeile \textit{i-verschiebung} ausgegeben. Die Trennstriche werden bei den Durchläufen 3 und 7 ausgegeben. Die vertikalen Abtrennungen der 3x3 Blöcke werden manuell durch senkrechte Striche in der Ausgabe eingefügt. Nach der Ausgabe wird die Datei wieder geschlossen.
+
+\end{document}

@@ -2,6 +2,19 @@
 #include <stdlib.h>
 #include "sudoku.h"
 
+static void freeArrays(int **zeilen, int **spalten, int **bloecke)
+{
+    for (int k = 0; k < 9; k++)
+    {
+        free(zeilen[k]);
+        free(spalten[k]);
+        free(bloecke[k]);
+    }
+    free(zeilen);
+    free(spalten);
+    free(bloecke);
+}
+
 int validate(int **matrix)
 { // 1 ist invalide, 0 ist valide; wenn er einen Fehler findet, bricht er ab
     // Diese Funktion soll prüfen, ob die übergeben Matrix valide ist.
@@ -43,9 +56,7 @@ int validate(int **matrix)
                 if (zeilen[i][zeilenWert - 1] == 1)
                 { // Wenn die Zahl schon vorhanden ist (also in der Matrix 1 eingetragen ist)
                     fprintf(stderr, "In Zeile %d ist eine doppelte Zahl vorhanden.\n", i + 1);
-                    freeMatrix(zeilen);
-                    freeMatrix(spalten);
-                    freeMatrix(bloecke);
+                    freeArrays(zeilen, spalten, bloecke);
                     return 1;
                 }
                 else
@@ -61,9 +72,7 @@ int validate(int **matrix)
                 if (spalten[spaltenWert - 1][i] == 1)
                 {
                     fprintf(stderr, "In Spalte %d ist eine doppelte Zahl vorhanden.\n", i + 1);
-                    freeMatrix(zeilen);
-                    freeMatrix(spalten);
-                    freeMatrix(bloecke);
+                    freeArrays(zeilen, spalten, bloecke);
                     return 1;
                 }
                 else
@@ -87,9 +96,7 @@ int validate(int **matrix)
                 if (bloecke[i][blockWert - 1] == 1)
                 {
                     fprintf(stderr, "In Block %d ist eine doppelte Zahl vorhanden.\n", i + 1);
-                    freeMatrix(zeilen);
-                    freeMatrix(spalten);
-                    freeMatrix(bloecke);
+                    freeArrays(zeilen, spalten, bloecke);
                     return 1;
                 }
                 else
@@ -99,8 +106,6 @@ int validate(int **matrix)
             }
         }
     }
-    freeMatrix(zeilen);
-    freeMatrix(spalten);
-    freeMatrix(bloecke);
+    freeArrays(zeilen, spalten, bloecke);
     return 0;
 }

@@ -7,9 +7,10 @@ void output(int **matrix)
     FILE *datei = fopen("outputSudoku.txt", "w");
     if (datei == NULL)
     {
+        perror("Fehler beim Oeffnen");
         return;
     }
-
+    // Counter, dass das Programm weiß, wann es Trennstriche augeben muss
     int verschiebung = 0; // Zeilen counter geht auch bei "----" hoch -> i geht auch hoch -> matrix[i] muss angepasst werden
     // Verschachtelte for Schleife
     for (int i = 0; i < 11; i++)

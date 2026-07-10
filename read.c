@@ -105,7 +105,7 @@ int **read()
         freeMatrix(matrix);
         return NULL;
     }
-    printf("Das eingegebene Sudoku:\n");
+    printf("Successfully read the following puzzle:\n");
     printMatrix(matrix);
 
     return matrix;
