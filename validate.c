@@ -21,9 +21,9 @@ int validate(int **matrix)
 
     // Sind die Zeilen valide?
     // Matrizen; durch calloc mit 0 gefüllt
-    int **zeilen = calloc(9, sizeof(int *));
-    int **spalten = calloc(9, sizeof(int *));
-    int **bloecke = calloc(9, sizeof(int *)); // Jede Zeile ist ein Block. wir gehen spaltenweise alle 9 Blöcke durch.
+    int **zeilen = malloc(9 * sizeof(int *));
+    int **spalten = malloc(9 * sizeof(int *));
+    int **bloecke = malloc(9 * sizeof(int *)); // Jede Zeile ist ein Block. wir gehen spaltenweise alle 9 Blöcke durch.
 
     for (int i = 0; i < 9; i++)
     {
