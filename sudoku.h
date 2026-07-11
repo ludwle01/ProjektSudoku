@@ -14,7 +14,11 @@ void printMatrix(int** matrix);
 void printRow(int* row);
 void printBox(int **matrix, int box);
 
+void motivateMe(void);
 
-void motivateMe();
+int **createSudoku(int difficulty);
+int getSolutionAmount(int **sudoku);
+int DonaldKnuth(int **sudoku, int doASolve);
+void playSudokuInteractive(int **sudoku);
 
 #endif

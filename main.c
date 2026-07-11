@@ -24,7 +24,7 @@ void returnToSudokuMenu(void);
 
 void callStartMenu(void) {
     while(1) {
-        printf("\nHallo User!\n Ich bin Mister Masterbrain, dein persöhnlicher Assistent um Sudokus zu lösen.");
+        printf("Hallo User!\nIch bin Mister Masterbrain, dein persoenlicher Assistent, um Sudokus zu loesen.\n");
         printf("Wie kann ich dir heute helfen?\n");
         printf("1: Sudoku erstellen\n");
         printf("2: Sudoku einlesen\n");
@@ -104,7 +104,7 @@ void sudokuMenu(void) {
             printf("\n");
             playSudokuInteractive(sudoku);
         } else if(menuOption == 2) {
-            printf("Mister Masterbrain löst das Sudoku mit dem Brute-Force Algorithmus...\n");
+            printf("Mister Masterbrain loest das Sudoku mit dem Brute-Force Algorithmus...\n");
             int solveResult = solve(0, 0, sudoku);
             if(solveResult == 1) {
                 printMatrix(sudoku);
@@ -127,7 +127,7 @@ void sudokuMenu(void) {
             returnToMenu();
             return;
         } else if(menuOption == 3) {
-            printf("\nMister Masterbrain löst das Sudoku mit dem Donald-Knuth Algorithmus...\n");
+            printf("\nMister Masterbrain loest das Sudoku mit dem Donald-Knuth Algorithmus...\n");
             int solveResult = DonaldKnuth(sudoku, 1);
             if(solveResult == 0) {
                 printMatrix(sudoku);
@@ -159,7 +159,7 @@ void sudokuMenu(void) {
 void checkSolvability(void) {
     int solutionCount = DonaldKnuth(sudoku, 0);
     if(solutionCount <= 0) {
-        printf("\nMister Masterbrain sagt: dieses Sudoku ist unlösbar\n");
+        printf("\nMister Masterbrain sagt: dieses Sudoku ist unloesbar\n");
     } else if(solutionCount == 1) {
         printf("\nDas Sudoku ist loesbar und besitzt genau eine Loesung.\n");
     } else if(solutionCount >= 101) {
