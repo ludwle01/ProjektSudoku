@@ -1,119 +1,222 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "sudoku.h" 
 
-int main() 
-{
-printf("Hi friendly user!\nI am Mister Masterbrain, your personal assistant for solving Sudoku puzzles!\nHow can I support you today?\n");
-printf("1: Solve sudoku\n 2: Demand hint for your sudoku\n 3: Check if your sudoku is solveable\n 4: Get motivational support\n Your choice: ");
+int **sudoku = NULL;
 
-int option; // user tippt gewünschte Option ein
-int eingabe = scanf("%d", &option);
+//Funktionen aus anderen Projektdateien
+int **createSudoku(int difficulty);
+void printMatrix(int **matrix);
+int **read(void);
+int DonaldKnuth(int **sudoku, int doASolve);
+void playSudokuInteractive(int **sudoku);
+void motivateMe(void);
+int validate(int **matrix);
+int solve(int row, int column, int **sudoku);
+void output(int **matrix);
 
-if(eingabe!=1 || option<1 || option>4) 
-{ // invalider Input
-    printf("Sorry, Mister Masterbrain cannot help you with that! Try again and choose a number between 1 and 4!\n");
-    return EOF;
-}
+//Funktionen dieser Datei
+void callStartMenu(void);
+void sudokuMenu(void);
+void returnToMenu(void);
+int getUserIntInput(int min, int max);
+void checkSolvability(void);
+void returnToSudokuMenu(void);
 
-if(option!=4){ // in fast allen Fällen braucht man das Ziel Sudoku
-    printf("Mister Masterbrain will refer to the puzzle in file 'inputSudoku.txt' of this project folder.\n Change this puzzle to solve a specific sudoku. \n");
-    int** test = read(); // Einlesen aus Datei
-    if (test == NULL) { // Fehler beim Einlesen
-        fprintf(stderr, "Sudoku could not be read from file 'inputSudoku.txt'\n");
-        return 1; 
-    }
+void callStartMenu(void) {
+    while(1) {
+        printf("\nHallo User!\n Ich bin Mister Masterbrain, dein persöhnlicher Assistent um Sudokus zu lösen.");
+        printf("Wie kann ich dir heute helfen?\n");
+        printf("1: Sudoku erstellen\n");
+        printf("2: Sudoku einlesen\n");
+        printf("Deine Wahl: ");
 
-    if(validate(test)){ // Fehler in der Rätsel Vorlage?
-        return 1; // Abbruch, wenn fehlerhafte Vorlage
-    }else{ // sonst geht es weiter
-        printf( "No missmatch in your puzzle.\n");
-    }
+        int startOption = getUserIntInput(1, 2);
+        if(startOption == 1) {
+            printf("\nWelche Schwierigkeitsstufe soll das Sudoku haben?\n");
+            printf("1: Einfach\n");
+            printf("2: Mittel\n");
+            printf("3: Schwer\n");
+            printf("Deine Wahl: ");
 
-    // Sudoku schonmal komplett lösen
-    printf("|\n|\nMister Masterbrain is thinking...\n|\n|\n");
-    solve(0,0,test); // Lösung ab (0,0), also komplett
-    if(validate(test)){ //Fehler in der gefundenen Lösung?
-        printf( "Mister Masterbrain could not solve the puzzle... If HE can't, it's simply impossible!\n");
-        return 1;
-    }else{        
-        printf("Mister Masterbrain successsfully solved your Sudoku...\n");
-    }
-
-    int option2; // schonmal alles mögliche deklarieren
-    int eingabe2;
-    int eingabe3;
-    int eingabe4;
-    int row;
-    int column;
-
-    switch(option){
-        
-        case 1: // ganzes Sudoku ausgeben
-            printf("Here comes the whole solution of your puzzle:\n"); 
-            printMatrix(test);    
-            break; 
-        case 2: // Tipp, also nur einen Teil ausgeben
-            printf("Choose an option:\n 1: Show specific row\n 2: Show specific 3x3 box\n 3: Show single field\n Your choice: ");
-            eingabe2 = scanf("%d", &option2); // user darf nochmal aussuchen
-
-            if(eingabe2!=1 || option2<1 || option2>3) { // invalider Input
-                printf("Sorry, Mister Masterbrain cannot help you with that! Try again and choose a number between 1 and 3!\n");
-                return 1;
+            int difficulty = getUserIntInput(1, 3);
+            if(difficulty == 1) {
+                printf("\nEin einfaches Sudoku wird erstellt...\n\n");
+            } else if(difficulty == 2) {
+                printf("\nEin mittelschweres Sudoku wird erstellt...\n\n");
+            } else {
+                printf("\nEin schwieriges Sudoku wird erstellt...\n\n");
             }
 
-            printf("%d\n", option2);
-
-            switch(option2){
-                case 1:
-                    printf("Enter row from 1 to 9: Row ");
-                    eingabe3 = scanf("%d", &row);
-                    if(eingabe3!=1 || row<1 || row>9) { // invalider Input
-                        printf("Sorry, this row does not exist!\n");
-                        return 1;
-                    }
-                    printRow(test[row-1]);
-                    break;
-                case 2:
-                    printf("Enter box from 1 (top left), 2 (top middle).... to 9 (bottom right): Box ");
-                    eingabe3 = scanf("%d", &row);
-                    if(eingabe3!=1 || row<1 || row>9) { // invalider Input
-                        printf("Sorry, this box does not exist!\n");
-                        return 1;
-                    }
-                    printBox(test, row);
-                    break;
-                case 3:
-                    printf("Enter row (1-9) of the aimed field: ");
-                    eingabe3 = scanf("%d", &row);
-                    printf("Enter column (1-9) of the aimed field: ");
-                    eingabe4 = scanf("%d", &column);
-                    if(eingabe3!=1 || eingabe4!=1 || row<1 || row>9 || column<1 || column>9) { // invalider Input
-                        printf("Sorry, this field does not exist!\n");
-                        return 1;
-                    }
-                    printf("Field[%d][%d] needs to be filled with number %d.\n", row, column, test[row-1][column-1]);
+            sudoku = createSudoku(difficulty);
+            if(sudoku == NULL) {
+                printf("\nDas Sudoku konnte nicht erstellt werden.\n");
+                printf("Druecke ENTER, um zum Startmenue zurueckzukehren.");
+                getUserIntInput(0, 0);
+                continue;
             }
-            break;
-        default: // Lösbarkeit wurde schon geklärt
-            printf("Mister Masterbrain has solved that puzzle, it is possible!\n");
-            break;
-    }
+            printMatrix(sudoku);
+            sudokuMenu();
+        } else {
+            printf("\nBitte beachte, dass die Datei inputSudoku.txt heisst ");
+            printf("und im gleichen Ordner liegt.\n");
+            printf("Hast du dies sichergestellt, druecke ENTER!");
+            getUserIntInput(0, 0);
+            printf("\n");
 
-    //_- - - - - - - - - - - TO DO: output(test)
-    printf("Find your sudoku's solution in file 'outputSudoku.txt' in the current folder.\n")
-    printf("Provided by Mister Masterbrain, your personal sudoku assistant.\n"); // Werbung für's eigene Programm immer gut
-   
-    // Speicher befreien
-    for (int i = 0; i < 9; i++) 
-    {
-        free(test[i]);
-    }
-    free(test);
+            sudoku = read();
+            if(sudoku == NULL) {
+                printf("\nDas Sudoku konnte nicht aus der Datei: inputSudoku.txt gelesen werden.\n");
+                printf("Druecke ENTER, um zum Startmenue zurueckzukehren.");
+                getUserIntInput(0, 0);
+                continue;
+            }
 
-}else{ // unnötige Zusatzoption 4
-    motivateMe(); // dummer Spruch zur "Motivation"
+            int validationResult = validate(sudoku);
+            if(validationResult == 0) {
+                checkSolvability();
+                sudokuMenu();
+            } else {
+                printf("\nDies ist kein gueltiges Sudoku!\n");
+                printf("\nBitte ueberpruefe deine Eingabe und versuche es erneut!\n");
+                returnToMenu();
+                printf("Druecke ENTER, um zum Startmenue zurueckzukehren.");
+                getUserIntInput(0, 0);
+            }
+        }
+    }
 }
 
+void sudokuMenu(void) {
+    while(sudoku != NULL) {
+        printf("\nWas moechtest du mit dem Sudoku machen?\n");
+        printf("0: Zurueck zum Menue\n");
+        printf("1: Sudoku selber loesen\n");
+        printf("2: Sudoku mit dem Brute-Force Algorithmus loesen\n");
+        printf("3: Sudoku mit dem Donald-Knuth Algorithmus loesen\n");
+        printf("4: Motivationsspruch anzeigen\n");
+        printf("Deine Wahl: ");
 
+        int menuOption = getUserIntInput(0, 4);
+        if(menuOption == 0) {
+            returnToMenu();
+            return;
+        } else if(menuOption == 1) {
+            printf("\n");
+            playSudokuInteractive(sudoku);
+        } else if(menuOption == 2) {
+            printf("Mister Masterbrain löst das Sudoku mit dem Brute-Force Algorithmus...\n");
+            int solveResult = solve(0, 0, sudoku);
+            if(solveResult == 1) {
+                printMatrix(sudoku);
+                printf("\nSoll das Sudoku gespeichert werden?\n");
+                printf("1: Ja\n");
+                printf("2: Nein\n");
+                printf("Deine Wahl: ");
+
+                int saveOption = getUserIntInput(1, 2);
+                if(saveOption == 1) {
+                    output(sudoku);
+                    printf("\nDas Sudoku wurde erfolgreich gespeichert!\n");
+                }
+            } else {
+                printf("\nMister Masterbrain hat versagt und konnte das Sudoku nicht loesen!\n");
+            }
+
+            printf("\nDruecke ENTER, um zum Startmenue zurueckzukehren.");
+            getUserIntInput(0, 0);
+            returnToMenu();
+            return;
+        } else if(menuOption == 3) {
+            printf("\nMister Masterbrain löst das Sudoku mit dem Donald-Knuth Algorithmus...\n");
+            int solveResult = DonaldKnuth(sudoku, 1);
+            if(solveResult == 0) {
+                printMatrix(sudoku);
+                printf("\nSoll das Sudoku gespeichert werden?\n");
+                printf("1: Ja\n");
+                printf("2: Nein\n");
+                printf("Deine Wahl: ");
+
+                int saveOption = getUserIntInput(1, 2);
+                if(saveOption == 1) {
+                    output(sudoku);
+                    printf("\nDas Sudoku wurde erfolgreich gespeichert!\n");
+                }
+            } else {
+                printf("\nMister Masterbrain hat versagt und konnte das Sudoku nicht loesen!\n");
+            }
+            printf("\nDruecke ENTER, um zum Startmenue zurueckzukehren.");
+            getUserIntInput(0, 0);
+            returnToMenu();
+            return;
+        } else {
+            printf("\n");
+            motivateMe();
+            returnToSudokuMenu();
+        }
+    }
+}
+
+void checkSolvability(void) {
+    int solutionCount = DonaldKnuth(sudoku, 0);
+    if(solutionCount <= 0) {
+        printf("\nMister Masterbrain sagt: dieses Sudoku ist unlösbar\n");
+    } else if(solutionCount == 1) {
+        printf("\nDas Sudoku ist loesbar und besitzt genau eine Loesung.\n");
+    } else if(solutionCount >= 101) {
+        printf("\nDas Sudoku ist loesbar und besitzt mindestens 101 Loesungen.\n");
+    } else {
+        printf("\nDas Sudoku ist loesbar und besitzt %d Loesungen.\n", solutionCount);
+    }
+    returnToSudokuMenu();
+}
+
+void returnToSudokuMenu(void) {
+    printf("\nDruecke ENTER, um zum Sudoku-Menue zurueckzukehren.");
+    getUserIntInput(0, 0);
+}
+
+void returnToMenu(void) {
+    if(sudoku == NULL) {
+        return;
+    }
+    for(int i = 0; i < 9; i++) {
+        free(sudoku[i]);
+    }
+    free(sudoku);
+    sudoku = NULL;
+}
+
+int getUserIntInput(int min, int max) {
+    //Bei min == 0 und max == 0 wird nur auf ENTER gewartet.
+    if(min == 0 && max == 0) {
+        int character;
+        while((character = getchar()) != '\n' && character != EOF) {
+            //Eingabepuffer bis zum Zeilenende leeren.
+        }
+        return 0;
+    }
+
+    while(1) {
+        int option;
+        int inputResult = scanf("%d", &option);
+        int character;
+        while((character = getchar()) != '\n' && character != EOF) {
+            //Eingabepuffer bis zum Zeilenende leeren.
+        }
+
+        if(inputResult == 1 && option >= min && option <= max) {
+            return option;
+        }
+        if(inputResult == EOF) {
+            exit(EXIT_SUCCESS);
+        }
+        printf("Diese Eingabe versteht Mister Masterbrain nicht. Bitte waehle eine Zahl zwischen ");
+        printf("%d und %d: ", min, max);
+    }
+}
+
+int main(void) {
+    callStartMenu();
+
+    return 0;
 }
