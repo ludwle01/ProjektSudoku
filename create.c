@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "main2.h"
+#include "sudoku.h"
 
 // Sinn dieser Funktion: Brute Force für das Erstellen eines Sudokus. Dieses wird in createSudoku.txt ausgegeben.
 

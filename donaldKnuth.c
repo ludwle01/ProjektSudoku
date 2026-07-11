@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "main2.h"
+#include "sudoku.h"
 
 // Funktion wird hier deklariert, damit sie übersichtlicherweise ganz unten im Code stehen kann und der Compiler nicht meckert
 int solveMatrix(int depth, int coveredColumns[], int solution[], int **matrix);

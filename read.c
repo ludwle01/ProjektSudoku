@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "sudoku.h"
-#include "main2.h"
 
 void freeMatrix(int **matrix)
 {
