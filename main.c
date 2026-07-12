@@ -1,20 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "sudoku.h"
 int **sudoku = NULL;
-
-//Funktionen aus anderen Projektdateien
-int **createSudoku(int difficulty);
-void printMatrix(int **matrix);
-int **read(void);
-int DonaldKnuth(int **sudoku, int doASolve);
-void playSudokuInteractive(int **sudoku);
-void motivateMe(void);
-int validate(int **matrix);
-int solve(int row, int column, int **sudoku);
-void output(int **matrix);
-int isSudokuFinished(int **sudoku);
-void sudokuSolved(int **sudoku);
 
 //Funktionen dieser Datei
 void callStartMenu(void);
