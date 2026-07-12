@@ -13,6 +13,8 @@ void motivateMe(void);
 int validate(int **matrix);
 int solve(int row, int column, int **sudoku);
 void output(int **matrix);
+int isSudokuFinished(int **sudoku);
+void sudokuSolved(int **sudoku);
 
 //Funktionen dieser Datei
 void callStartMenu(void);
@@ -73,6 +75,11 @@ void callStartMenu(void) {
 
             int validationResult = validate(sudoku);
             if(validationResult == 0) {
+                if(isSudokuFinished(sudoku) == 0) {
+                    printf("\nDas eingelesene Sudoku ist bereits vollstaendig geloest.\n\n");
+                    returnToMenu();
+                    continue;
+                }
                 checkSolvability();
                 sudokuMenu();
             } else {
