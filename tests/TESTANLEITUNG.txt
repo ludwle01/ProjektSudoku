@@ -1,0 +1,6 @@
+Kompilieren von testSudoku:
+    windows: gcc -std=c11 -Wall -Wextra .\tests\testSudoku.c .\validate.c .\solve.c .\donaldKnuth.c .\create.c .\read.c .\printMatrix.c -o .\tests\TestSudoku.exe
+    macos/Linux: gcc -std=c11 -Wall -Wextra tests/testSudoku.c validate.c solve.c donaldKnuth.c create.c read.c printMatrix.c -o tests/TestSudoku
+
+Ausführen von testSudoku:
+    ./tests/TestSudoku
