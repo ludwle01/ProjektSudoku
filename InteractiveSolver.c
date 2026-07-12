@@ -1,15 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-// Funktionen aus anderen Projektdateien 
-int DonaldKnuth(int **sudoku, int doASolve);
-void returnToMenu(void);
-void printMatrix(int **matrix);
-void printRow(int *row);
-void printBox(int **matrix, int box);
-int getUserIntInput(int min, int max);
-int solve(int row, int column, int **sudoku);
-void output(int **matrix);
+#include "sudoku.h"
 
 /*
 Ueberprueft, ob die Eingabe des Users den Sudoku-Regeln entspricht

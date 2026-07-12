@@ -3,10 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main();
 int solve(int row, int column, int **sudoku); 
 int validate_cell(int row, int column, int number, int **sudoku); // einzelnes Feld checken
-int** read();
+int** read(void);
 int validate(int** matrix); // ganzes Sudoku checken
 void output(int** matrix);
 
@@ -20,5 +19,9 @@ int **createSudoku(int difficulty);
 int getSolutionAmount(int **sudoku);
 int DonaldKnuth(int **sudoku, int doASolve);
 void playSudokuInteractive(int **sudoku);
+int isSudokuFinished(int **sudoku);
+
+void returnToMenu(void);
+int getUserIntInput(int min, int max);
 
 #endif
