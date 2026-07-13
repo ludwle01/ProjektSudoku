@@ -15,7 +15,7 @@ Sudoku Rätsel Toolbox
        * [4x4 Sudokus](#größere-sudokus-lösen)
     * [createSudoku() - Sudoku-Generierung](#sudoku-generierung)
     * [Donald Knuth - Exact Cover & Lösungsanzahl](#donald-knuth---exact-cover)
-        * [Tauglichkeit und Performance](#tauglichkeit-und-performance)
+        * [Eignung](#tauglichkeit-und-performance)
     *  [Interaktives Lösen](#interaktives-lösen)
        *  [Hinweise ausgeben](#spezifische-hinweise-anfordern)
        *  [Funtool](#motivationshilfe)
@@ -24,7 +24,7 @@ Sudoku Rätsel Toolbox
 
 Zweck dieser Toolbox
 --------------------
-Diese Toolbox wurde erstellt, um einen Benutzer beim Lösen von Sudoku Rätseln in leichter bis mittlerer Schwierigkeit zu unterstützen. 
+Diese Toolbox wurde erstellt, um einen Benutzer beim Lösen von Sudoku Rätseln in sowohl leichter, als auch schwerer Schwierigkeit zu unterstützen. 
 Es können Sudokus eingelesen, vollständig gelöst und Hinweise gegeben werden. Außerdem können neue Rätsel erstellt werden und der Benutzer kann 
 interaktiv ein Sudoku lösen.
 
@@ -59,7 +59,7 @@ Verfügbare Funktionen
 ### Sudoku einlesen
 
 Die Funktion `read()` ist für das Einlesen des Sudokus aus der Datei `inputSudoku.txt` zuständig und speichert das Gitter in einer 9x9-Matrix ab. Während des Einlesevorgangs wird bereits eine Fehler- und Syntaxprüfung durchgeführt:
-* Er kontrolliert, ob ausschließlich gültige Ziffern (`0`-`9`) verwendet werden und genau 9 Einträge pro Zeile existieren.
+* Es kontrolliert, ob ausschließlich gültige Ziffern (`0`-`9`) verwendet werden und genau 9 Einträge pro Zeile existieren.
 * Formatierungszeichen wie Striche oder Leerzeichen, die der besseren Lesbarkeit dienen, werden ausgeblendet.
 * Nach dem erfolgreichen Einlesen wird das erkannte Sudoku zur Kontrolle direkt in der Konsole ausgegeben.
 
@@ -91,14 +91,14 @@ Für die Erstellung neuer Rätsel ist die Funktion `createSudoku()` zuständig. 
 Um die mathematische Eindeutigkeit der generierten Rätsel zu garantieren, setzt die Toolbox zusätzlich auf eine vereinfachte Vestion des bekannten Algorithmus X (Exact-Cover-Problem) von Donald Knuth:
 * **Die 729x324-Matrix:** Hierbei werden die vier grundlegenden Sudoku-Regeln (Feld-, Zeilen-, Spalten- und Block-Regel) als exaktes Überdeckungsproblem in einer großen binären Matrix modelliert.
 * **Lösungsanzahl prüfen:** Nach jedem entfernten Feld in `createSudoku()` prüft die Funktion `getSolutionAmount()`, ob das Rätsel weiterhin exakt eine einzige Lösung besitzt. Ist dies nicht der Fall (Gitter hat keine oder mehrere Lösungen), wird der letzte Schritt rückgängig gemacht.
-* **Flexibilität (`doASolve`):** Der Algorithmus kann je nach Parameter entweder ausschließlich die genaue Anzahl der Lösungen zählen oder das Sudoku aktiv lösen und die Lösung abspeichern.
+* **Flexibilität (`doASolve`):** Der Algorithmus kann je nach Parameter entweder ausschließlich die genaue Anzahl der Lösungen zählen oder das Sudoku lösen und die Lösung abspeichern.
 
 #### Tauglichkeit und Performance
 Der Algorithmus von Donald Knuth spielt seine Stärken vor allem bei sehr komplexen Sudokus aus. Selbst bei komplexen Rätseln mit nur 17 vorgegebenen Ziffern (dem Minimum für eine eindeutige Lösung) hat er eine hervorragende Laufzeit. Zwar werden auch leichtere Rätsel zuverlässig gelöst, allerdings geringfügig langsamer als mit dem Brute-Force-Algorithmus. Grund dafür ist, dass bei dem Brute-Force-Ansatz keine komplexe 729x324-Matrix aufgebaut werden muss.
 
 ### Interaktives Lösen
 Der Anwender hat die Möglichkeit sowohl automatisch erstellte, als auch eingelesene Sudokus via Eingaben im Terminal selbst zu lösen. Bei jedem neuen Spielzug kann er sich entscheiden, das Spiel abzubrechen, eine Zahl einzugeben oder sich einen Hinweis geben zu lassen.
-* **Abbrechen**: Entscheidet sich der Anwender, das Spiel abzubrechen, wird das Spiel beeendet und er wird zurüc zum Startmenü geführt.
+* **Abbrechen**: Entscheidet sich der Anwender, das Spiel abzubrechen, wird das Spiel beeendet und er wird zurück zum Startmenü geführt.
 * **Zahl eintragen**: Das Eintragen einer Zahl an einer gewünschen Stelle funktioniert nach dem Muster (Zeile, Spalte, Zahl). Bei der Eingabe von 1 2 4 wird also in Zeile 1, Spalte 2 die Zahl 4 eingetragen. Das System überprüft anschließend, ob die Eingabe den Regeln entspricht und ob das Sudoku weiterhin Lösbar ist.
 
 #### Spezifische Hinweise anfordern
@@ -127,6 +127,8 @@ Wer hat was gemacht
 - Implementierung des Algorithmus nach Donald Knuth (Exact-Cover-Matrix) zur Lösungssuche
 - Sudoku-Generierung (`createSudoku`) für drei verschiedene Schwierigkeitsgrade
 - Überprüfung der Lösungsanzahl und Eindeutigkeit (`getSolutionAmount`)
+- Validierung des Sudokus
+- Einlesen und Ausgeben des Sudokus
 
 #### Lena: 
 - Backtracking Solver inkl. Erweiterung auf Hexadezimal-Sudokus
@@ -135,5 +137,5 @@ Wer hat was gemacht
 
 #### Jari:
 - Möglichkeit, Sudokus interaktiv selbst zu lösen
-- Menüführung und vereinigung aller nötigen Funktionen in main()
+- Menüführung und Vereinigung aller nötigen Funktionen in main()
 - Automatisierte Tests 
