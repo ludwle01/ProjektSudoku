@@ -9,7 +9,7 @@ Sudoku Rätsel Toolbox
     *  [Menüführung](#menüführung)
 3.  [Verfügbare Funktionen](#verfügbare-funktionen)
     *  [read()](#sudoku-einlesen)
-    * [validate() - Regelüberprüfung](#regelüberprüfung)
+    *  [validate() - Regelüberprüfung](#regelüberprüfung)
     *  [solve() mit Backtracking](#sudoku-lösen-mit-backtracking)
        * [Eignung](#tauglichkeit-vom-backtracking)
        * [4x4 Sudokus](#größere-sudokus-lösen)
@@ -17,7 +17,6 @@ Sudoku Rätsel Toolbox
     * [Donald Knuth - Exact Cover & Lösungsanzahl](#donald-knuth---exact-cover)
         * [Tauglichkeit und Performance](#tauglichkeit-und-performance)
     *  [Interaktives Lösen](#interaktives-lösen)
-       *  [Jari dein Part](#jarisüberschrift)
        *  [Hinweise ausgeben](#spezifische-hinweise-anfordern)
        *  [Funtool](#motivationshilfe)
 4.  [Ausstehende Erweiterungen](#coming-soon)
@@ -53,8 +52,6 @@ Die Steuerung der Toolbox erfolgt über ein interaktives, textbasiertes Menü im
 * **Neues Sudoku generieren:** Erstellen eines neuen Rätsels in drei wählbaren Schwierigkeitsgraden.
 * **Interaktives Lösen:** Eigenständiges Ausfüllen des Gitters mit integrierter Regelüberprüfung und Motivationshilfen.
 
-### Menüführung
-
 
 Verfügbare Funktionen
 ---------------------
@@ -75,9 +72,10 @@ Direkt nach dem Einlesen sowie bei jedem Spielzug während des interaktiven Lös
 
 #### Tauglichkeit vom Backtracking
 Der Backtracking Algorithmus ist gut geeignet, um leichte bis mittelschwere 3x3 Sudokus zu lösen.
-Es wird genau eine Lösung ausgegeben. Der Algorithmus lässt sich bei Bedarf einfach nachvollziehen.
+Es wird genau eine Lösung ausgegeben. Der Algorithmus beruht auf einer rekursiven Tiefensuche und
+lässt sich bei Bedarf einfach nachvollziehen.
 #### Größere Sudokus lösen
-In dem separaten Projektordner ProjekSudokuHex/ ist ein spezielles main Programm hinterlegt, um 4x4 
+In dem separaten Projektordner 'ProjekSudokuHex/' ist ein spezielles main Programm hinterlegt, um 4x4 
 Sudoku Rätsel zu lösen. Zusätzlich zu den Ziffern 1 bis 9 wird in diesen Rätseln mit der Ziffer 0 sowie
 den Buchstaben a bis f gearbeitet. Bei der Eingabe muss berücksichtigt werden, dass "." an unbekannten 
 Positionen steht, anstatt der Ziffer 0. Ansonsten nutzt das Programm den gleichen Backtracking Algorithmus 
@@ -99,25 +97,25 @@ Der Algorithmus von Donald Knuth spielt seine Stärken vor allem bei sehr komple
 
 ### Interaktives Lösen
 
-#### jarisüberschrift
 
 #### Spezifische Hinweise anfordern
-Möchte ein Benutzer nicht die vollständige Lösung einsehen, sondern lediglich einen spezifischen Teil davon,
-so kann er über die Menüführung.... zu einer weiteren Auswahl gelangen: Es kann die Lösung einer bestimmte Zeile, 
-einer gewünschten 3x3 Box oder eines einzelnen Kästchens ausgegeben werden.
+Möchte ein Benutzer nicht die vollständige Lösung einsehen, sondern lediglich einen bestimmten Teil davon,
+so kann er innerhalb des interaktiven Solvers einen spezifischen Hinweis anfordern: 
+Es kann die Lösung einer bestimmten Zeile, einer gewünschten 3x3 Box oder eines einzelnen Kästchens ausgegeben werden.
 
 #### Motivationshilfe
 Zweck dieser Toolbox ist es, dem Benutzer ein vergnügtes Rätselraten zu ermöglichen. 
 Deshalb können nicht nur Sudokus maschinell gelöst werden, sondern der Benutzer kann sich auch motivieren lassen,
-sein Rätsel eigenständig zu meistern. Über die Menüoption .... kann dieses Tool erreicht werden.
+sein Rätsel eigenständig zu meistern. Nach dem Einlesen eines Sudokus kann dieses Tool über die Menüoption
+'4: Motivationsspruch anzeigen' erreicht werden.
 Dem Anwender wird ein zufälliger Spruch aus einem 10-teiligen Pool ausgegeben, der zum Weiterrätseln animieren soll.
 
 Coming soon
 -----------
 Benutzer dürfen auf die ständige Erweiterung unserer Toolbox hoffen. Angedacht sind u.a. das effizientere Lösen 
 von 4x4 und noch größeren Sudokus. Zukünftig sollen auch einzelne Spalten ausgegeben werden können, um dem Benutzer
-noch mehr Optionen für spezifische Hinweise zur Verfügung zu stellen.
-....offene Ideen
+noch mehr Optionen für spezifische Hinweise zur Verfügung zu stellen. Die Menüführung soll weiter optimiert und
+an das Feedback unserer Nutzer angepasst werden.
 
 Wer hat was gemacht
 -------------------
