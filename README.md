@@ -86,7 +86,7 @@ wie im Standard 3x3 Programm, es können jedoch nur Rätsel mit niedrigem Schwie
 ### Sudoku-Generierung
 Für die Erstellung neuer Rätsel ist die Funktion `createSudoku()` zuständig. Sie erzeugt per Brute-Force-Verfahren ein vollständig ausgefülltes und gültiges 9x9-Sudokugitter, indem zufällige Zahlen platziert und die verbleibenden Felder logisch aufgefüllt werden. 
 * **Schwierigkeitsgrade:** Anschließend werden je nach gewähltem Level gezielt Zahlen aus dem Gitter entfernt (Leicht: 40 Felder, Mittel: 50 Felder, Schwer: 55 Felder).
-* **Sicherheitsnetz:** Sollte ein Sudoku während der Generierung unlösbar werden oder sich in einer Sackgasse befinden, bricht eine integrierte Abbruchbedingung nach über 500 Fehlversuchen automatisch ab und startet die Erstellung sauber von vorn. Das fertige Rätsel wird anschließend ausgegeben.
+* **Sicherheitsnetz:** Sollte ein Sudoku während der Generierung unlösbar werden oder sich in einer Sackgasse befinden, bricht eine integrierte Abbruchbedingung nach über 500 Fehlversuchen automatisch ab und startet die erstellung sauber von vorn. Das fertige Rätsel wird anschließend ausgegeben.
 
 ### Donald Knuth - Exact Cover
 Um die mathematische Eindeutigkeit der generierten Rätsel zu garantieren, setzt die Toolbox zusätzlich auf eine vereinfachte Vestion des bekannten Algorithmus X (Exact-Cover-Problem) von Donald Knuth:
