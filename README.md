@@ -46,7 +46,7 @@ Das Einlesen der Rätsel erfolgt aus der Textdatei `inputSudoku.txt`. Damit die 
 * **Leere Zeilen:** Leerzeilen innerhalb der Datei werden übersprungen und führen zu keinem Abbruch.
 Sollten fehlerhafte Zeichen auftreten, zu viele oder zu wenige Einträge pro Zeile existieren oder das Sudoku unvollständig sein (weniger als 9 gültige Zeilen), bricht das Einlesen mit einer passenden Fehlermeldung ab.
 
-### Menüführung[cite: 5]
+### Menüführung
 Die Steuerung der Toolbox erfolgt über ein interaktives, textbasiertes Menü im Terminal. Der Anwender hat dabei Zugriff auf folgende Hauptfunktionen:
 * **Einlesen:** Laden eines neuen Sudokus aus der Datei `inputSudoku.txt`.
 * **Automatisches Lösen & Hinweise:** Das vollständige Lösen des Rätsels oder das Anfordern spezifischer Hinweise für bestimmte Bereiche.
