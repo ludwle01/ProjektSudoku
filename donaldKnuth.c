@@ -347,7 +347,7 @@ int solveMatrix(int depth, int coveredColumns[], int solution[], int **matrix)
     // Wenn es keine 0 mehr in coveredColumns gibt (targetColumn bleibt -1), ist das Sudoku gelöst --> Basisfall
     if (targetColumn == -1)
     {
-        return 1; // Hinweis: In countSolutionsMatrix musst du hier natürlich "(*solutionCount)++; return;" nutzen
+        return 1;
     }
 
     // Gehe jede zeile durch und prüfe ob sie die nächste Null abdeckt
