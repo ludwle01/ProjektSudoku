@@ -366,7 +366,6 @@ int solveMatrix(int depth, int coveredColumns[], int solution[], int **matrix)
                     break;
                 }
             }
-
             // Wenn die Zahl gültig ist, dann in coveredColumns und solution eintragen und nächste Rekursion aufrufen
             if (isValid == 1)
             {
