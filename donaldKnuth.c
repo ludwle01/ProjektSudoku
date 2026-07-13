@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "sudoku.h"
+#include "main2.h"
 
 // Funktion wird hier deklariert, damit sie übersichtlicherweise ganz unten im Code stehen kann und der Compiler nicht meckert
 int solveMatrix(int depth, int coveredColumns[], int solution[], int **matrix);
@@ -292,21 +293,62 @@ int DonaldKnuth(int **sudoku, int doASolve)
 // Gibt 1 zurück, wenn das Sudoku lösbar ist, ansonsten 0
 int solveMatrix(int depth, int coveredColumns[], int solution[], int **matrix)
 {
-    // Zuerst finden wir heraus, welcher Indize in coveredColumns die nächste 0 hat
+    // Zuerst finden wir heraus, welche unbedeckte Spalte die wenigsten gültigen Optionen (Einsen) hat
     int targetColumn = -1;
-    for (int i = 0; i < 324; i++)
+    int minOnes = 1000; // Startwert, der größer als das Maximum an Optionen (hier 9) ist
+
+    for (int col = 0; col < 324; col++)
     {
-        if (coveredColumns[i] == 0)
+        // Wir betrachten nur unbedeckte Spalten
+        if (coveredColumns[col] == 0)
         {
-            targetColumn = i;
-            break;
+            int currentOnesCount = 0;
+
+            // Gehe alle 729 Zeilen durch, um zu sehen, wie viele diese Spalte noch abdecken können
+            for (int row = 0; row < 729; row++)
+            {
+                if (matrix[row][col] == 1)
+                {
+                    // Prüfen, ob diese Zeile aktuell überhaupt noch gültig/nutzbar ist
+                    int isValid = 1;
+                    for (int j = 0; j < 324; j++)
+                    {
+                        if (matrix[row][j] == 1 && coveredColumns[j] == 1)
+                        {
+                            isValid = 0;
+                            break;
+                        }
+                    }
+
+                    // Wenn die Zeile nutzbar ist, erhöhen wir unseren Zähler für diese Spalte
+                    if (isValid == 1)
+                    {
+                        currentOnesCount++;
+                    }
+                }
+            }
+
+            // Haben wir eine Spalte mit weniger Optionen als unser bisheriges Minimum gefunden?
+            if (currentOnesCount < minOnes)
+            {
+                minOnes = currentOnesCount;
+                targetColumn = col;
+
+                // Optimierung (Fail-Early):
+                // Bei 0 Optionen laufen wir unweigerlich in eine Sackgasse, bei 1 Option ist der Zug erzwungen.
+                // In beiden Fällen können wir sofort abbrechen und müssen die restlichen Spalten nicht prüfen.
+                if (minOnes <= 1)
+                {
+                    break;
+                }
+            }
         }
     }
 
-    // Wenn es keine 0 mehr in coveredColumns gibt, ist das Sudoku gelöst --> Basisfall
+    // Wenn es keine 0 mehr in coveredColumns gibt (targetColumn bleibt -1), ist das Sudoku gelöst --> Basisfall
     if (targetColumn == -1)
     {
-        return 1;
+        return 1; // Hinweis: In countSolutionsMatrix musst du hier natürlich "(*solutionCount)++; return;" nutzen
     }
 
     // Gehe jede zeile durch und prüfe ob sie die nächste Null abdeckt
