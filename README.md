@@ -74,6 +74,7 @@ Direkt nach dem Einlesen sowie bei jedem Spielzug während des interaktiven Lös
 Der Backtracking Algorithmus ist gut geeignet, um leichte bis mittelschwere 3x3 Sudokus zu lösen.
 Es wird genau eine Lösung ausgegeben. Der Algorithmus beruht auf einer rekursiven Tiefensuche und
 lässt sich bei Bedarf einfach nachvollziehen.
+
 #### Größere Sudokus lösen
 In dem separaten Projektordner 'ProjekSudokuHex/' ist ein spezielles main Programm hinterlegt, um 4x4 
 Sudoku Rätsel zu lösen. Zusätzlich zu den Ziffern 1 bis 9 wird in diesen Rätseln mit der Ziffer 0 sowie
@@ -96,7 +97,9 @@ Um die mathematische Eindeutigkeit der generierten Rätsel zu garantieren, setzt
 Der Algorithmus von Donald Knuth spielt seine Stärken vor allem bei sehr komplexen Sudokus aus. Selbst bei komplexen Rätseln mit nur 17 vorgegebenen Ziffern (dem Minimum für eine eindeutige Lösung) hat er eine hervorragende Laufzeit. Zwar werden auch leichtere Rätsel zuverlässig gelöst, allerdings geringfügig langsamer als mit dem Brute-Force-Algorithmus. Grund dafür ist, dass bei dem Brute-Force-Ansatz keine komplexe 729x324-Matrix aufgebaut werden muss.
 
 ### Interaktives Lösen
-
+Der Anwender hat die Möglichkeit sowohl automatisch erstellte, als auch eingelesene Sudokus via Eingaben im Terminal selbst zu lösen. Bei jedem neuen Spielzug kann er sich entscheiden, das Spiel abzubrechen, eine Zahl einzugeben oder sich einen Hinweis geben zu lassen.
+* **Abbrechen**: Entscheidet sich der Anwender, das Spiel abzubrechen, wird das Spiel beeendet und er wird zurüc zum Startmenü geführt.
+* **Zahl eintragen**: Das Eintragen einer Zahl an einer gewünschen Stelle funktioniert nach dem Muster (Zeile, Spalte, Zahl). Bei der Eingabe von 1 2 4 wird also in Zeile 1, Spalte 2 die Zahl 4 eingetragen. Das System überprüft anschließend, ob die Eingabe den Regeln entspricht und ob das Sudoku weiterhin Lösbar ist.
 
 #### Spezifische Hinweise anfordern
 Möchte ein Benutzer nicht die vollständige Lösung einsehen, sondern lediglich einen bestimmten Teil davon,
@@ -131,3 +134,6 @@ Wer hat was gemacht
 - Funtool mit Motivationssprüchen
 
 #### Jari:
+- Möglichkeit, Sudokus interaktiv selbst zu lösen
+- Menüführung und vereinigung aller nötigen Funktionen in main()
+- Automatisierte Tests 
