@@ -64,7 +64,7 @@ Die Funktion `read()` ist für das Einlesen des Sudokus aus der Datei `inputSudo
 * Nach dem erfolgreichen Einlesen wird das erkannte Sudoku zur Kontrolle direkt in der Konsole ausgegeben.
 
 ### Regelüberprüfung
-Direkt nach dem Einlesen sowie bei jedem Spielzug während des interaktiven Lösens kommt die Funktion `validate()` zum Einsatz. Sie stellt sicher, dass die aktuelle Matrix den Sudoku-Regeln entspricht:
+Direkt nach dem Einlesen kommt die Funktion `validate()` zum Einsatz. Sie stellt sicher, dass die aktuelle Matrix den Sudoku-Regeln entspricht:
 * Mit temporären Hilfsarrays wird für jede Zeile, jede Spalte und jeden der 3x3-Blöcke kontrolliert, ob eine Ziffer doppelt vorkommt.
 * Sobald ein Regelverstoß entdeckt wird, bricht die Prüfung ab und gibt eine präzise Fehlermeldung auf dem Terminal aus (z. B. *"In Block 4 ist eine doppelte Zahl vorhanden."*).
 
