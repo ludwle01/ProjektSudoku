@@ -1,0 +1,134 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[ngerman]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}    
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[
+    top=2.0cm,
+    bottom=2.0cm,
+    left=2.0cm,
+    right=2.0cm,
+    headheight=16pt, 
+    headsep=20pt
+]{geometry}
+
+\usepackage{parskip} 
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} 
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{Sudoku-Tool} 
+\fancyhead[R]{\thepage} 
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{booktabs}
+
+\newcommand{\berichtstitel}{Sudoku-Tool}
+\newcommand{\autoren}{Lena Marie Ludwig, Jari Hartmann, Lisa Rappold}
+\newcommand{\institution}{Technische Hochschule Ulm}
+\newcommand{\datum}{Juli 2026}
+
+\begin{document}
+
+\thispagestyle{plain}
+\begin{center}
+    \LARGE \textbf{\berichtstitel} \\[0.4cm]
+    \large \autoren \\[0.2cm]
+    \small \textit{\institution} \\[0.3cm]
+    \small \textbf{\datum} \\[0.2cm] 
+    \rule{\linewidth}{1pt} 
+\end{center}
+\vspace{0.5cm}
+
+
+\vspace{0.8cm}
+
+\section*{Einleitung}
+
+Dieses Projekt hat das Ziel, ein Sudoku-Tool zu entwickeln, mit dem man interaktiv Sudoku spielen kann oder eine Funktion zur direkten Lösung des Rätsels bietet. 
+
+Das Programm kann ein Sudoku aus einer Textdatei einlesen und dieses auf Gültigkeit prüfen. Alternativ kann man ein Sudoku mit beliebiger Schwierigkeitsstufe generieren lassen. Anschließend kann der Benutzer entweder interaktiv das Sudoku lösen, oder das Sudoku mit einem von zwei Lösungsalgorithmen lösen lassen. Abschließend kann die Lösung des Sudokus gespeichert werden.
+In diesem Bericht stellen wir die Umsetzung und Funktionalität der einzelnen Funktionen vor.
+
+\section{main()}
+To do: Jari
+
+\section{read()} \label{read}
+
+Eine read() Methode zum Einlesen von Sudoku-Rätseln ist essenzial für die Funktionalität des Solvers. Hierfür gibt der User sein Sudoku in die Textdatei inputSudoku.txt ein. Anschließend wird versucht, die Textdatei im Lesemodus zu öffnen. Ist das Öffnen erfolgreich, liest die Methode mithilfe einer while-Schleife das Sudoku ein. Hierbei werden kleine Fehler bei der Nutzereingabe ignoriert. Leerzeichen, senkrechte Striche, Bindestriche und leere Zeilen werden übersprungen. Bereits bei dem Einlesen wird eine grundlegende Validierung vorgenommen. Die Methode wirft eine Fehlermeldung, wenn in einer Zeile, die nicht leer ist, mehr oder weniger als 9 Zahlen vor kommen. Außerdem werden nur Eingaben von 0 bis 9 akzeptiert. Die Zahl 0 steht hierbei für ein leeres Feld. Auch bei zu vielen oder zu wenigen Zeilen wird eine Fehlermeldung ausgegeben. Handelt es sich bei dem eingegeben Zeichen um eine Zahl zwischen 0 und 9, wird durch die Substraktion des ASCII Wertes von 0 der korrekte Wert in der Matrix gespeichert. Zuletzt ruft die Funktion printMatrix() auf, um die eingelesene Matrix in der Konsole auszugeben.
+
+\section{create()}
+
+Stattdessen kann man sich auch mithilfe von create() ein zufälliges, eindeutiges Sudoku generieren lassen. Hierfür werden zwei zufällige Zahlen in ein leeres Sudoku eingetragen. Nachdem mithilfe der Funktion \textit{DonaldKnuth} auf Gültigkeit geprüft wurde und ein Sudoku erstellt wurde, werden dann je nach Schwierigekit mehr oder wengier Zahlen entfernt. Hierbei wird nach jeder entfernten Zahl geprüft, ob das Sudoku noch eindeutig lösbar ist, sonst wird eine andere Zahl entfernt.
+
+\section{validate()}
+
+Die Funkton validate() überprüft, ob das Sudoku gültig ist. Hierfür werden drei 9x9 Hilfs-Matrizen mit Nullen für Zeilen, Spalten und Blöcke erstellt.
+
+Wird beispielsweise die erste Zeile des Sudokus überprüft, geht die Funktion jedes Element der ersten Zeile durch. Ist eine Zahl vorhanden, wird in der entsprechenden Zeile der Matrix \textit{zeile} der Wert in Index \textit{zahl-1} auf 1 gesetzt. Ist dieses Element in der Matrix schon eine 1, kommt diese Zahl doppelt vor und es wird eine Fehlermeldung ausgegeben.
+
+Indem die Indizes der verschachtelten for-Schleifen getauscht werden, können die Spalten des Sudokus überprüft werden. Es wird mit der selben Logik vorgegangen. Hierbei repäsentiert jede Spalte in der Matrix \textit{spalte} eine Spalte in dem Sudoku.
+
+Das Validieren der Blöcke ist etwas komplexer. Hierfür werden zwei Hilfsarrays BLOCKZEILE und BLOCKSPALTE erstellt, die für jeden der neun Blöcke die Koordinaten der linken oberen Ecke speichern. Die Zeile wird ermittelt, indem der entsprechende Wert aus BLOCKZEILE mit j/3 addiert wird. Da Nachkommastellen von Integern abgeschnitten werden, werden die entsprechenden Werte in BLOCKZEILE mit 0, 1 und 2 addiert, was die korrekte Zeile ergibt.
+
+Die Spalte wird ermittelt, indem der entsprechende Wert aus BLOCKSPALTE mit j\%3 addiert wird. Hierdurch wird BLOCKZEILE mit der Sequenz 0, 1, 2 addiert, was die korrekte Spalte ergibt.
+
+Hierbei wird jeder Block in der Matrix \textit{block} in einer Zeile gespeichert. Auch hier repräsentiert jede Spalte eine Zahl.
+
+\section{Solver mittels Backtracking}
+Ein wesentliches Ziel dieser Projektarbeit bestand darin, einen Solver zu entwickeln, der für ein eingegebenes oder selbst generiertes Sudoku eine valide Lösung berechnet. Ein naheliegender und simpler Ansatz hierfür ist das \textit{Backtracking} Prinzip \cite{gitEx} Das Sudoku Spielfeld lässt sich als ein graphischer Baum interpretieren, in dem jedes der 81 einzelnen Felder eine Ebene bzw. Generation des Baums repräsentiert. Für jede mögliche Ziffer 1 bis 9 existiert ein Knoten im Baum, der wiederum neun Kinderknoten besitzt, welche die möglichen Ziffern des jeweils nachfolgenden Felds im Sudoku darstellen. Es entsteht also ein Graph aus insgesamt $9^{81}$ Knoten, wobei anzumerken ist, dass es sich dabei lediglich um ein theoretisches Konstrukt zur Veranschaulichung des Algorithmus handelt. Es wurde also kein Baum programmiertechnisch umgesetzt, was allerdings zur Optimierung des Codes noch einen möglichen Ansatzpunkt hätte darstellen können.
+
+Im Backtracking Algorithmus jedenfalls wird der beschriebene Baum \textit{rekursiv} nach einer Lösung des Sudokus durchsucht. Dies geschieht nach dem Prinzip der \textit{Tiefensuche}: Für eine zu testende Ziffer auf Ebene $i$ des Baums - entsprechend dem $i$-ten Feld des Sudoku Rätsels - werden zunächst alle Möglichkeiten auf Ebene $i+1$ - entsprechend dem nachfolgenden Kästchen im Sudoku-Gitter - überprüft. Erst wenn auf Ebene $j$ für jede der Ziffern $1$ bis $9$ ein Fehler auftritt - wenn also für das Feld $j$ keine gültige Besetzung existiert auf Basis der vorangegangenen Felder - dann erst wird das Feld $j$ auf den Eintrag $0$ zurückgesetzt und im Solver auf Ebene $j-1$ zurück gesprungen, um die nächste Ziffer auszuprobieren. Ein Fehler besteht dabei in einer \textit{Kollision}, also dem mehrfachen Auftreten derselben Ziffer in der gleichen Zeile oder Spalte bzw. im gleichen $3\times3$ Block. Solch ein Fehler wird durch die Funktion \verb|validate_cell()| entdeckt, die in jedem Schritt des Solvers aufgerufen wird.
+
+Weiterhin ruft die \verb|solve()| Funktion sich immer wieder selbst auf: Sie besitzt nämlich neben dem Rätselgitter \verb|gitter| auch die Eingabe Parameter \verb|int Zeile| und \verb|int Spalte|, welche die Position des zu lösenden Kästchens im Sudokugitter spezifizieren. Im Rahmen der Tiefensuche wird also \verb|solve(Zeile, Spalte+2, gitter)| bzw. am Ende einer Zeile \verb|solve(Zeile+1, 0, gitter)| aufgerufen, sodass die Kästchen von links oben nach rechts unten zeilenweise durchlaufen werden. Bereits vorgegebene Felder, in denen also beim Einlesen keine $0$ steht, werden natürlich übersprungen.\linebreak 
+Wie in jeder Rekursion muss auch bei der Tiefensuche im Sudokugitter ein \textit{Basisfall} definiert werden: Ist bis zum Aufruf \verb|solve(8,8, gitter)| keine Kollision aufgetreten, so wurde eine vollständige Lösung gefunden und es erfolgt nur noch der \textit{rekursive Aufstieg}, bei dem der nach oben weitergereichte Rückgabe \verb|return 1;| den Sucherfolg anzeigt.
+
+\section{Erweiterung: 4x4 Sudokus}
+Um das Tool noch etwas vielseitiger zu gestalten, wurde es um die Möglichkeit zum Lösen von \textit{Hexadezimal Sudokus} ergänzt. Bei dieser Sonderform des Rätselspiels wird das $9\times9$ Spielfeld zu einem $ 16\times16 $ Feld erweitert und es wird mit den Hexadezimal Ziffern $0-9\&$ A-F gearbeitet. Hier kann also die Ziffer $0$ nicht mehr wie in Abschnitt \ref{read} beschrieben für ein unbesetztes Feld stehen, sondern dafür wird nun das Makro \verb|EMPTY| mit dem Wert $-1$ definiert und die Funktionen zum Einlesen und Ausgeben des Rätsels entsprechend angepasst. Der Solver arbeitet intern weiterhin mit dem Datentyp \verb|Integer| und die Ziffern werden lediglich zur Ausgabe in die Hexadezimal Ziffern umgewandelt. Darauf könnte man im Weiteren verzichten, wenn die Erweiterung für beliebig große Sudokus genutzt werden können soll. 
+Um diese potentielle Folgeversion zu erleichtern, wurde bereits im $4\times4$ Sudoku mit dem Makro \verb|SIZE| anstelle einer statischen Größe.
+
+Schon für \verb|SIZE=4| ergibt sich allerdings im Backtracking eine Größe des Suchbaums von $ 16^{16\cdot 16} $ Knoten, was bereits bei mittelschweren Sudokus zu unzweckmäßigen Laufzeiten führt. Damit verdeutlicht diese Erweiterung auch recht eindrücklich die wahrscheinlich wichtigste Limitation am Backtracking-Algorithmus: Durch das \textit{Brute Force} Prinzip, also das systematische Ausprobieren aller potentiellen Lösungen, wächst die Laufzeit rapide an, im Falle des Sudokus nämlich exponentiell. Um auch größere Sudokus bzw. Sudokus mit einem geringen Anteil an vorgegebenen Zahlen in einer zufriedenstellenden Laufzeit lösen zu können, ist deshalb eine andere Strategie erforderlich.
+
+\section{solve() mithilfe des Algorithm X}
+
+Alternativ kann ein Sudoku auch als Exact-Cover-Problem betrachtet und mit dem Algorithm X von Donald Knuth gelöst werden. Hierfür wird mithilfe von calloc() und malloc() eine Matrix der Größe 729x324 erstellt. In den Zeilen dieser Matrix werden alle möglichen Züge repräsentiert. In den Spalten werden für jeden Zug die vier grundlegenden Sudoku Regeln gespeichert: Jedes Feld muss belegt sein, in jede Zeile und Spalte kommt jede Zahl einmal vor, und pro 3x3 Block kommt jede Zahl genau einmal vor. Am Ende sind also in jeder Zeile vier Einsen (abgesehen von einem Sonderfall).
+
+Außerdem wird ein Array \textit{coveredColumns} eingeführt, welches die bereits erfüllten Regeln speichert. Ist in jedem Index dieses Arrays genau eine Eins, ist das Sudoku valide gelöst. Es gibt auch ein Array \textit{solution}, welches die verwendeten Zeilen von der großen Matrix speichert. 
+
+Eine Hilfsfunktion \textit{solveMatrix()} nutzt dann Rekursion und Backtracking, um eine Lösung zu finden. Hierbei wird immer die nächste Null in \textit{coveredColumns} gesucht, dann wird die große Matrix nach einem möglichen Spielzug durchsucht, die diese Null abdeckt und gegen keine andere Regel verstößt. Wird eine Zeile gefunden, wird diese in \textit{solution} und \textit{coveredColumn} gespeichert. Falls \textit{coveredColumns} noch nicht ausschließlich mit Einsen gefüllt ist, aber trotzdem keine passende Regel vorhanden ist, wird der letzte Spielzug rückgängig gemacht und die Rekursion läuft weiter.
+
+\section{output()}
+
+Diese Funktion hat das Ziel, das Sudoku formatiert in einer Textdatei zu speichern. 
+
+Hierfür öffnet sie zunächst die Zieldatei \textit{outputSudoku.txt} im Schreibmodus. Schlägt dies fehl, wird eine Fehlermeldung ausgegeben. Für die Ausgabe der Matrix wird eine for-Schleife über insgesamt elf Durchläufe genutzt, wobei neun für die Zeilen des Sudokus stehen und zwei für die Trennstriche zwischen den 3x3 Blöcken. Hierbei gibt es die Variable \textit{verschiebung}, die dafür sorgt, dass trotz der Trennstriche die korrekten Zeilen der Matrix ausgegeben werden. Das erfolgt, indem die Variable jeweils bei dem Einfügen der horizontalen Trennstrichen hochgezählt wird. Dann wird jeweils die Matrix in der Zeile \textit{i-verschiebung} ausgegeben. Die Trennstriche werden bei den Durchläufen 3 und 7 ausgegeben. Die vertikalen Abtrennungen der 3x3 Blöcke werden manuell durch senkrechte Striche in der Ausgabe eingefügt. Nach der Ausgabe wird die Datei wieder geschlossen.
+
+
+\section{Tests}
+To do: Jari
+
+\section*{Zusammenarbeit mit git und github}
+Neben der Implementierung des Sudoku Programms lag ein wesentliches Ziel der Projektarbeit darin, das Versions-Kontrollsystem \textsc{git} kennenzulernen und den \textsc{github} workflow zu verinnerlichen. Genau darin bestand auch eine große Herausforderung des Projekts, denn für Beginner erfordert der Einstieg in \textsc{git} einige Umstellungen im Arbeitsprozess des Programmierens und es müssen sich zusätzliche Routinen angeeignet werden. 
+Durch das 4-Augen-Prinzip bei der Annahme von \textit{pull-requests} kann jedoch ein erheblicher Mehrwert für die Qualitätssicherung des Codes erreicht werden. Gegenseitige Kommentare und Verbesserungsvorschläge am Code der anderen Teammitglieder sowie Diskussionen über allfällige \textit{merge-Konflikte} intensivieren zudem den stetigen Austausch im Team. Die Nutzung verschiedener \textit{Branches} erlaubt das gleichzeitige Bearbeiten eines Projektes an verschiedenen Angriffspunkten und durch mehrere Teammitglieder.
+
+Im Rahmen der Projektarbeit konnten hiermit erste Erfahrungen gesammelt werden und einige Vorzüge der Nutzung eines Systems wie \textsc{git} konnten trotz aller Schwierigkeiten beim Erlernen des workflows bereits erlebt werden. Weiterhin hat uns das Projekt gezeigt, wie sich der modulare Aufbau eines Programms bewähren kann und wie wichtig es in der Softwareentwicklung ist, neben dem eigenen Programmieren auch den Code anderer Teammitglieder detailliert nachzuvollziehen.
+
+\section*{Aufteilung}
+\begin{itemize}
+\item \textbf{Lisa Rappold:} input(), output(), validate(), create(), Solver nach Donald Knuth Algorithmus
+\item \textbf{Lena Ludwig:} Backtracking Solver, 4x4 Sudokus, Teile des Sudokus anzeigen, zufällige Motivationssprüche 
+\item \textbf{Jari Hartmann:} Mainmethode und Menüführung, Programmtests
+\end{itemize}
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{literatur}
+
+\end{document}
