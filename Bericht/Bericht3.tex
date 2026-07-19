@@ -58,7 +58,17 @@ Das Programm kann ein Sudoku aus einer Textdatei einlesen und dieses auf Gültig
 In diesem Bericht stellen wir die Umsetzung und Funktionalität der einzelnen Funktionen vor.
 
 \section{main()}
-To do: Jari
+
+Die Funktion main() bildet den Einstiegspunkt des Programms. Sie bleibt bewusst kurz, ruft callStartMenu() auf und beendet das Programm nach dessen Rückkehr mit dem Rückgabewert 0. Die eigentliche Steuerung erfolgt über zwei Menüfunktionen. Im Startmenü wählt der User, ob ein Sudoku mit einer von drei Schwierigkeitsstufen erstellt oder aus inputSudoku.txt eingelesen werden soll. Ein eingelesenes Sudoku wird zunächst mit validate() geprüft. Ist es bereits vollständig, wird dies direkt ausgegeben. Andernfalls prüft checkSolvability() einmalig mithilfe des Donald-Knuth-Algorithmus, ob und wie oft das Sudoku lösbar ist.
+Danach führt sudokuMenu() zu den weiteren Funktionen. Der User kann das Sudoku selbst lösen, einen der beiden Solver starten oder sich einen Motivationsspruch anzeigen lassen. Nach einer automatischen Lösung kann das Ergebnis gespeichert werden. getUserIntInput() prüft sämtliche Menüeingaben und fängt Buchstaben sowie Werte außerhalb des jeweiligen Bereichs ab. Beim Verlassen gibt returnToMenu() den dynamisch reservierten Speicher der Matrix frei.
+
+\section{InteractiveSolver()}
+
+Das interaktive Lösen selbst wird in der Funktion von playSudokuInteractive() gesteuert. Vor jedem Spielzug wird das aktuelle Sudoku zusammen mit einem Aktionsmenü ausgegeben. Der User kann das Spiel abbrechen, eine Zahl eintragen oder einen Hinweis anfordern. getUserInput() erwartet Zeile, Spalte und Zahl als drei ganze Zahlen. Falsche Formate und Werte außerhalb von 1 bis 9 werden abgefangen. Für den Zugriff auf die Matrix werden die eingegebenen Koordinaten anschließend auf die Indizes 0 bis 8 umgerechnet.
+Ein Zug wird zuerst von isLegalMove() geprüft. Dabei muss das gewählte Feld leer sein und die Sudokuregeln dürfen nicht verletzt werden. Danach setzt isStillSolvable() den Wert nur testweise ein und prüft mit dem Donald-Knuth-Algorithmus, ob mindestens eine Lösung verbleibt. Erst wenn beide Prüfungen erfolgreich sind, wird die Zahl dauerhaft übernommen. Nach jedem Zug kontrolliert isSudokuFinished(), ob alle Felder belegt sind. In diesem Fall kann die Lösung gespeichert werden.
+Für einen Hinweis wird eine Kopie des aktuellen Sudokus mit dem Backtracking-Solver gelöst. Aus dieser Kopie kann eine Zeile, ein 3×3-Block oder ein einzelnes Feld angezeigt werden, ohne den Spielstand zu verändern. Diese Ausgaben werden bewusst nicht direkt ins Sudoku eingetragen, um den Rätzelspaß nicht zu mindern.
+
+
 
 \section{read()} \label{read}
 
@@ -112,7 +122,10 @@ Hierfür öffnet sie zunächst die Zieldatei \textit{outputSudoku.txt} im Schrei
 
 
 \section{Tests}
-To do: Jari
+Die automatisierten Tests befinden sich in testSudoku.c und werden über eine eigene main()-Funktion gestartet. Die Tests zielen besonders auf randfälle und falsche eingaben des Users ab. Die Hilfsfunktion pruefeTest() vergleicht für jeden Test das erhaltene mit dem erwarteten Ergebnis. Weitere Hilfsfunktionen erstellen und löschen die dynamischen Testmatrizen oder prüfen, ob ein gelöstes Sudoku vollständig ausgefüllt ist.
+Insgesamt werden 17 Einzeltests ausgeführt. validate() wird mit einem gültigen Sudoku sowie mit doppelten Zahlen in Zeile, Spalte und 3×3-Block getestet. Für validate\_cell() werden ein erlaubter Wert und Konflikte in allen drei Bereichen geprüft. Beide Solver müssen eine Lösung finden, diese vollständig ausfüllen und ein gültiges Sudoku erzeugen. Beim Donald-Knuth-Algorithmus wird zusätzlich die eindeutige Lösbarkeit kontrolliert. createSudoku() muss ein gültiges und eindeutig lösbares Sudoku erstellen. Als Randfall wird außerdem geprüft, ob read() eine leere Eingabedatei korrekt abfängt. Eine vorhandene Datei wird dafür vorübergehend gesichert und anschließend wiederhergestellt.
+Erwartete Fehlerausgaben der Funktionen selbst werden abhängig vom Betriebssystem nach NUL beziehungsweise /dev/null umgeleitet, dies dient der besseren Übersichtlichkeit. Sind alle Tests bestanden, beendet sich das Testprogramm mit 0, andernfalls mit 1. Da es eine eigene main()-Funktion besitzt, darf main.c beim Kompilieren der Tests nicht eingebunden werden. In der finalen Version wurden alle 17 Tests erfolgreich bestanden.
+
 
 \section*{Zusammenarbeit mit git und github}
 Neben der Implementierung des Sudoku Programms lag ein wesentliches Ziel der Projektarbeit darin, das Versions-Kontrollsystem \textsc{git} kennenzulernen und den \textsc{github} workflow zu verinnerlichen. Genau darin bestand auch eine große Herausforderung des Projekts, denn für Beginner erfordert der Einstieg in \textsc{git} einige Umstellungen im Arbeitsprozess des Programmierens und es müssen sich zusätzliche Routinen angeeignet werden. 
@@ -120,11 +133,17 @@ Durch das 4-Augen-Prinzip bei der Annahme von \textit{pull-requests} kann jedoch
 
 Im Rahmen der Projektarbeit konnten hiermit erste Erfahrungen gesammelt werden und einige Vorzüge der Nutzung eines Systems wie \textsc{git} konnten trotz aller Schwierigkeiten beim Erlernen des workflows bereits erlebt werden. Weiterhin hat uns das Projekt gezeigt, wie sich der modulare Aufbau eines Programms bewähren kann und wie wichtig es in der Softwareentwicklung ist, neben dem eigenen Programmieren auch den Code anderer Teammitglieder detailliert nachzuvollziehen.
 
+\section*{Fazit}
+
+Die Implementierung des Sudoku-Tools konnte erfolgreich abgeschlossen und durch das Bestehen aller finalen Tests vollständig verifiziert werden. Mit der fertigen Anwendung steht nun ein vielseitiges Werkzeug zur Verfügung, das es dem Nutzer ermöglicht, Sudokus sowohl interaktiv über die Benutzeroberfläche zu lösen als auch programmgestützt valide Rätsel generieren zu lassen.
+
+
+
 \section*{Aufteilung}
 \begin{itemize}
 \item \textbf{Lisa Rappold:} input(), output(), validate(), create(), Solver nach Donald Knuth Algorithmus
 \item \textbf{Lena Ludwig:} Backtracking Solver, 4x4 Sudokus, Teile des Sudokus anzeigen, zufällige Motivationssprüche 
-\item \textbf{Jari Hartmann:} Mainmethode und Menüführung, Programmtests
+\item \textbf{Jari Hartmann:} Mainmethode, interactiveSolver(), Tests
 \end{itemize}
 
 \nocite{*}
